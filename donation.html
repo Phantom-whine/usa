@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.5/cdn.min.js" defer></script>
+    <script src="https://checkout.flutterwave.com/v3.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+    <!-- Navigation -->
+    <nav class="border-b border-gray-200 fixed w-full bg-white z-10 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="text-xl font-semibold text-blue-600">Donations</div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex items-center justify-center px-4 pt-20">
+        <div class="max-w-lg w-full py-10 px-6 bg-white rounded-lg shadow-md" x-data="{ 
+            totalRaised: 12580,
+            amounts: 0,
+        }">
+
+            <!-- Content -->
+            <div class="space-y-6">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800">Support our mission</h1>
+                    <p class="text-gray-500">Every contribution makes a difference.</p>
+                </div>
+                <form id="donationForm" onsubmit="validateAndPay(event)">
+                    <div class="space-y-4">
+                        <input 
+                            id="email" 
+                            type="email" 
+                            placeholder="Enter your email" 
+                            class="border border-gray-300 px-4 py-2 rounded w-full focus:ring focus:ring-blue-200 focus:outline-none" 
+                            required
+                        >
+                        <input 
+                            id="amount" 
+                            type="number" 
+                            min="1" 
+                            placeholder="Enter donation amount" 
+                            class="border border-gray-300 px-4 py-2 rounded w-full focus:ring focus:ring-blue-200 focus:outline-none" 
+                            required
+                        >
+                        <button 
+                            type="submit" 
+                            class="w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700 transition duration-200">
+                            Donate Now
+                        </button>
+                    </div>
+                </form>
+                <div class="text-sm text-gray-400 text-center mt-4">
+                    Secure payment • Tax-deductible
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-200 bg-white">
+        <div class="max-w-5xl mx-auto px-4 py-8">
+            <div class="text-sm text-gray-500 text-center">
+                © 2024 Organization. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function validateAndPay(event) {
+            event.preventDefault(); // Prevent form submission
+
+            const emailInput = document.querySelector('#email');
+            const amountInput = document.querySelector('#amount');
+
+            const email = emailInput.value.trim();
+            const amount = parseFloat(amountInput.value.trim());
+
+            if (!email) {
+                alert('Please enter your email address.');
+                emailInput.focus();
+                return;
+            }
+
+            if (!amount || amount <= 0) {
+                alert('Please enter a valid donation amount.');
+                amountInput.focus();
+                return;
+            }
+
+            makePayment(email, amount);
+        }
+
+        function makePayment(email, amount) {
+            FlutterwaveCheckout({
+                public_key: 'FLWPUBK-8a14bdef0999986d17e07725777f0124-X',
+                tx_ref: `titanic-${Math.random() * 1000000000}`,
+                amount: amount,
+                currency: 'USD',
+                payment_options: 'card, mobilemoneyghana, ussd',
+                redirect_url: 'https://glaciers.titanic.com/handle-flutterwave-payment',
+                meta: {
+                    consumer_id: 23,
+                    consumer_mac: '92a3-912ba-1192a',
+                },
+                customer: {
+                    email: email,
+                },
+                customizations: {
+                    title: 'Donations',
+                    description: 'Make your Donations',
+                    logo: 'https://www.shutterstock.com/image-vector/hand-care-logo-charity-design-600nw-2478867723.jpg',
+                },
+            });
+        }
+    </script>
+</body>
+</html>

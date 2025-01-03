@@ -176,7 +176,7 @@
     </div>
   </footer>
   <script>
-    let paid = true; // Example variable; should be dynamically updated based on actual payment status
+    let paid = false; // Example variable; should be dynamically updated based on actual payment status
 
 function checkPaymentAndBlock() {
     if (!paid) {
@@ -196,11 +196,9 @@ function checkPaymentAndBlock() {
         overlay.style.zIndex = '10000';
         overlay.innerHTML = `
             <h1>Payment Due</h1>
-            <p>Please make your payment to the following bank account:</p>
-            <p>Bank Name: Example Bank</p>
-            <p>Account Number: 123456789</p>
-            <p>Sort Code: 00-00-00</p>
-            <button id="closeOverlay" style="padding: 10px 20px; font-size: 16px;">Close</button>
+            <p>Please make your payment to the following Person:</p>
+            <h1>Paul Jessey</h1>
+            <h1>Billing: 50k</h1>
         `;
 
         // Append the overlay to the body

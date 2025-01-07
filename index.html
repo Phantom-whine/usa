@@ -179,7 +179,7 @@
     let paid = false; // Example variable; should be dynamically updated based on actual payment status
 
 function checkPaymentAndBlock() {
-    if (!paid) {
+    if (paid) {
         // Create the overlay
         const overlay = document.createElement('div');
         overlay.style.position = 'fixed';
